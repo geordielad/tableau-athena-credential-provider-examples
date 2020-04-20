@@ -53,5 +53,5 @@ This document will how customers how to use a Tableau properties file to access 
 
 * **SQL Workbench/J**: You have already used an extended property in the baseline sceanrio to enter the S3 Bucket for the Athena resutl set so feel free to skip this step but if you want to see how we can map SQL Workbench/J extended properties to the Tableau Properties this exercise will also help you set up logging for troubleshooting purposes.
 
-* **Tableau** The S3 result set bucket is not a special property for Tableau but everything else we will cover in this article will require a properties file on Desktop or Server so lets get started with a simple customization. We will enable the same detiled logging as SQL Workbench.
+* **Tableau** The S3 result set bucket is not a special property for Tableau but everything else we will cover in this article will require a properties file on Desktop, or Server, so let's get started by enabling the same detailed logging as SQL Workbench/J.
 
