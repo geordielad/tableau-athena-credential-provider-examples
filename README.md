@@ -47,7 +47,7 @@ This document will how customers how to use a Tableau properties file to access 
   
   * **Tableau Desktop**: Follow the documentation in the Tableau Desktop Help Topic [Amazon Athena](https://help.tableau.com/current/pro/desktop/en-us/examples_amazonathena.htm). Use the same settings you used in the SQL Workbench/J test. 
   
-   ![Tableau Desktop Example](https://help.tableau.com/current/pro/desktop/en-us/Img/examples_amazonathena.png)
+    ![Tableau Desktop Example](https://help.tableau.com/current/pro/desktop/en-us/Img/examples_amazonathena.png)
 
 **2. SQL Workbench Extended Properties and Tableau's Properties File** 
 
