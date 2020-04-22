@@ -49,9 +49,28 @@ This document will how customers how to use a Tableau properties file to access 
   
     ![Tableau Desktop Example](https://help.tableau.com/current/pro/desktop/en-us/Img/examples_amazonathena.png)
 
-**2. SQL Workbench Extended Properties and Tableau's Properties File** 
+**2. SQL Workbench/J Extended Properties and Tableau's Properties File** 
 
-* **SQL Workbench/J**: You have already used an extended property in the baseline sceanrio to enter the S3 Bucket for the Athena resutl set so feel free to skip this step but if you want to see how we can map SQL Workbench/J extended properties to the Tableau Properties this exercise will also help you set up logging for troubleshooting purposes.
+* **SQL Workbench/J**: You have already used an extended property in the baseline scenario to enter the S3 Bucket for the Athena result set so feel free to skip this step but if you want to see how we can map SQL Workbench/J extended properties to the Tableau Properties this exercise will also help you set up logging for troubleshooting purposes. You have already used extended properties in SQL Workbench/J for the Athena result set bucket in S3. We just need to add the logging properties. These properties are documented in the [Athena JDBC Driver Installation and Configuration Guide](https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC_2.0.9/docs/Simba+Athena+JDBC+Driver+Install+and+Configuration+Guide.pdf):
+
+![SQL Workbench/J Logging Properties](img/sql-workbench-logging-properties.jpg)
+
+After setting your extended properties enter your ID and Key and test the connection. You should see some log files created in the log folder.
+
+![Athena Log Files](img/athena-log-files.jpg)
 
 * **Tableau** The S3 result set bucket is not a special property for Tableau but everything else we will cover in this article will require a properties file on Desktop, or Server, so let's get started by enabling the same detailed logging as SQL Workbench/J.
 
+On Tableau Desktop you will need to create an *athena.properties* file in your Tableau Repository Datasources folder. This is described in more detail in the [Customizing JDBC Connections KB Article](https://kb.tableau.com/articles/howto/Customizing-JDBC-Connections). To enable detailed logging the properties file will contain several key/value settings. Note that the key names and values are exactly the same as you entered in SQL Workbench. ([example](property-file-examples/scenario-2/athena.properties)):
+
+```
+loglevel=6
+logpath=c:/athena-jdbc-logs
+UseAwsLogger=1
+```
+
+Once you enable logging on the driver and perform a test connection and and query you will see some log files created in the logging folder.
+
+![Athena Log Files](img/athena-log-files-2.jpg)
+
+If you are troubleshooting the useful information is usually in the connection file. and you will often see multiple connection files created during your testing. If you are testing SQL Workbench and Tableau at the same time you may want to put the log files in different folders.
