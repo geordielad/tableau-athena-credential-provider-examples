@@ -89,9 +89,7 @@ This scenario will require IAM and IdP configuration so you will need appropriat
     
     * **SQL Workbench/J**:
     
-    <div class="bg-blue-light mb-2">
-      Note: You will need to be running SQL Workbench on the EC2 Instance..text-gray-dark on .bg-blue-light
-    </div>
+    **Note:** You will need to be running SQL Workbench on the EC2 Instance.
     
     ![Workbench/J Instance profile Credentials Extended Properties](img/workbech-instance-profile-properties.jpg)
     
@@ -109,10 +107,8 @@ This scenario will require IAM and IdP configuration so you will need appropriat
         UseAwsLogger=1
     ```
     
-    As documented in the Driver guide, you will need to associate an IAM Role to the EC2 Instance that is hosting Tableau Server. If the Tableau instance is a cluster then attach the role to each node in the cluster. The steps on the AWS side are documented in several articles:
+    As documented in the Driver guide, you will need to associate an IAM Role to the EC2 Instance that is hosting Tableau Server. If the Tableau instance is a cluster then attach the role to each node in the cluster. The steps on the AWS side are documented in the [IAM roles for Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) article.
     
-    * [IAM roles for Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
-
     On my EC2 Instance I created a role and configured that role to allow access to Athena and S3:
     
     ![EC2 Instance Profile Role](img/ec2-instance-iam-role.jpg)
@@ -121,4 +117,4 @@ This scenario will require IAM and IdP configuration so you will need appropriat
 
     ![IAM Instance Profile Role](img/iam-instance-profile-role.jpg)
     
-    
+    As long as the role has appropriate access to Athena and S3 then SQL Workbench and Tableau will be able to utilize the Instance Profile to acquire the credentials for Athena. But first we need to publish some content from Tableau Desktop and I am going to assume that your Tableau Desktop is not on an EC2 instance. This means that we cannot use the Instance Profile Credentials scenario we will need to use another technique. Don't worry, later in this aticle we will see some options for allowing the Desktop authentication to not rely on static credentials but right now lets create some content on Tableau Desktop using a static Id and Access Key.
