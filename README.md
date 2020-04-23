@@ -12,7 +12,7 @@ This document will how customers how to use a Tableau properties file to access 
 
 **1. The Baseline**: No customization required - Access ID and Secret Access Key. We will connect to Athena in SQL Workbench/J and Tableau using the default credentials. 
 
-**2. Add Some Extended Properties**: This is more of a test to show how the various layers interact than a real use case. We will enable more detailed logging using the extended properties in SQL Workbench/J and show the equivalent properties in Tableau's *athena.properties* file.
+**2. SQL Workbench/J Extended Properties and the Tableau JDBC Properties File**: This is more of a test to show how the various layers interact than a real use case. We will enable more detailed logging using the extended properties in SQL Workbench/J and show the equivalent properties in Tableau's *athena.properties* file.
 
 **3. Instance Profile Credentials Provider**: This provider allows us to authenticate to Athena using the IAM Role that is tied to an EC2 Instance. This is very useful if Tableau Server is running on an EC2 Instance but it can also work if Tableau Desktop is running on the Instance. We will test both Desktop and Server. In this scenario the Athena Credentials are loaded from the Amazon EC2 Instance Metadata Service. This mneans that the user, or Tableau, does not need to know any secrets. 
 
@@ -53,7 +53,7 @@ This scenario will require IAM and IdP configuration so you will need appropriat
   
     ![Tableau Desktop Example](https://help.tableau.com/current/pro/desktop/en-us/Img/examples_amazonathena.png)
 
-**2. SQL Workbench/J Extended Properties and Tableau's Properties File** 
+**2. SQL Workbench/J Extended Properties and the Tableau Properties File** 
 
 * **SQL Workbench/J**: You have already used an extended property in the baseline scenario to enter the S3 Bucket for the Athena result set so feel free to skip this step but if you want to see how we can map SQL Workbench/J extended properties to the Tableau Properties this exercise will also help you set up logging for troubleshooting purposes. You have already used extended properties in SQL Workbench/J for the Athena result set bucket in S3. We just need to add the logging properties. These properties are documented in the [Athena JDBC Driver Installation and Configuration Guide](https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC_2.0.9/docs/Simba+Athena+JDBC+Driver+Install+and+Configuration+Guide.pdf):
 
@@ -112,3 +112,13 @@ This scenario will require IAM and IdP configuration so you will need appropriat
     As documented in the Driver guide, you will need to associate an IAM Role to the EC2 Instance that is hosting Tableau Server. If the Tableau instance is a cluster then attach the role to each node in the cluster. The steps on the AWS side are documented in several articles:
     
     * [IAM roles for Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html)
+
+    On my EC2 Instance I created a role and configured that role to allow access to Athena and S3:
+    
+    ![EC2 Instance Profile Role](img/ec2-instance-iam-role.jpg)
+
+    In the IAM Console the Role looks like this:
+
+    ![IAM Instance Profile Role](img/iam-instance-profile-role.jpg)
+    
+    
