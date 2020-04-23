@@ -89,11 +89,14 @@ This scenario will require IAM and IdP configuration so you will need appropriat
     
     * **SQL Workbench/J**:
     
-    > Note: You will need to be running SQL Workbench on the EC2 Instance.
+    <div class="bg-blue-light mb-2">
+      Note: You will need to be running SQL Workbench on the EC2 Instance..text-gray-dark on .bg-blue-light
+    </div>
     
     ![Workbench/J Instance profile Credentials Extended Properties](img/workbech-instance-profile-properties.jpg)
     
-    * **Tableau Server**:    
+    * **Tableau Server**:  
+    
     ([Tableau athena.properties file for Instance Profile Credentials](property-file-examples/scenario-3/athena.properties))
     
     ```
