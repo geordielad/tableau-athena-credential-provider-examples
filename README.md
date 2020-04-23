@@ -14,11 +14,15 @@ This document will how customers how to use a Tableau properties file to access 
 
 **2. Add Some Extended Properties**: This is more of a test to show how the various layers interact than a real use case. We will enable more detailed logging using the extended properties in SQL Workbench/J and show the equivalent properties in Tableau's *athena.properties* file.
 
-**3. Properties File Credentials Provider**: In this scenario we get the Access ID and Secret Access Key from a file. This is not a scenario that I would expct to have much use in a production environment but it will get us started using AWS credentials components and how they related to the JDBC driver and hence the properties file in Tableau. This is important because much of the AWS and Simba documentation will use SQL Workbench/J to show how to customize the JDBC driver. It also starts to demonstrate that there is a relatinship between Tableau and the JDBC driver and the AWS IAM infrastructure, and AWS Java SDK.
+**3. Instance Profile Credentials Provider**: This provider allows us to authenticate to Athena using the IAM Role that is tied to an EC2 Instance. This is very useful if Tableau Server is running on an EC2 Instance but it can also work if Tableau Desktop is running on the Instance. We will test both Desktop and Server. In this scenario the Athena Credentials are loaded from the Amazon EC2 Instance Metadata Service. This mneans that the user, or Tableau, does not need to know any secrets. 
 
-**4. Instance Profile Credentials Provider**: This provider allows us to authenticate to Athena using the IAM Role that is tied to an EC2 Instance. This is very useful if Tableau Server is running on an EC2 Instance but it can also work if Tableau Desktop is running on the Instance. We will test both Desktop and Server. In this scenario the Athena Credentials are loaded from the Amazon EC2 Instance Metadata Service. This mneans that the user, or Tableau, does not need to know any secrets. 
+**4. AWS Security Token Service**: AWS IAM has the concept of Temprorary Session Tokens. These tokens are provided by the AWS Security Token Service (STS). Several of the Credentials Providers can leverage STS directly or indirectly. STS Tokens are dynamic and temporary so they have the advantage of not being needed to be stored in a location that could be compromised. 
 
-**5. Secure Token Service**: AWS IAM has the concept of Temprorary Session Tokens. These tokens are provided by the AWS Secure Token Service (STS). Several of the Credentials Providers can leverage STS directly or indirectly. STS Tokens are dynamic and temporary so they have the advantage of not being needed to be stored in a location that could be compromised. 
+**5. Using SAML Based Federated Access with an Identity Provider (IdP)**: Your users may not have direct access to Athena credentials but is is possible to have them authenticate via an external IdP like Okta or ADFS. In this case the JDBC driver supports the configuration of an Idp so the users pass their IdP credentials (username and password) rather than an IAM Access ID and Secret Access Key. The authentication flow is completed behind the scenes and results in a temporary session token that will allow the user to authenticate to Athena. It is imporant to understand that this authentication flow is via the driver without any user interaction and is therefore not able to support MFA. However it does remove the need for separate Access IDs for every Athena user.
+
+This scenario will require IAM and IdP configuration so you will need appropriate IAM privileges and and admin rights on an IdP to complete this example. This is well documented in this [Enabling Federated Access to the Athena API Article](https://docs.aws.amazon.com/athena/latest/ug/access-federation-saml.html). We will 
+
+**6. Properties File Credentials Provider**: There may be situations where you want to source the credentials from some special location. This scenario may not be a good idea in a production environment but we will cover it as it will lay some foundation for the some later custom scenarios.
 
 ## Applications, Tools and Roles Requirements for each Scenario
 
@@ -74,3 +78,7 @@ This document will how customers how to use a Tableau properties file to access 
     ![Athena Log Files](img/athena-log-files-2.jpg)
 
     If you are troubleshooting the useful information is usually in the connection file. and you will often see multiple connection files created during your testing. If you are testing SQL Workbench and Tableau at the same time you may want to put the log files in different folders.
+
+* **3. Instance Profile Credentials Provider**
+
+If your Tableau Server is installed on an AWS EC2 Instance you can use the IAM Instance Profile to authenticate to Athena. This has significant advantages in that no user that are consuming published workbooks or shared data connection need any Athena Credentials at any time. The permissions to Athena will be controlled by your AWS administrator.
