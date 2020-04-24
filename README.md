@@ -81,19 +81,19 @@ This scenario will require IAM and IdP configuration so you will need appropriat
 
 **3. Instance Profile Credentials Provider**
 
-    If your Tableau Server is installed on an AWS EC2 Instance you can use the IAM Instance Profile to authenticate to Athena. This has significant advantages in that no user that are consuming published workbooks or shared data connection need any Athena Credentials at any time. The permissions to Athena will be controlled by your AWS administrator.
+If your Tableau Server is installed on an AWS EC2 Instance you can use the IAM Instance Profile to authenticate to Athena. This has significant advantages in that no user that are consuming published workbooks or shared data connection need any Athena Credentials at any time. The permissions to Athena will be controlled by your AWS administrator.
 
-    The configuration for SQL Workbench/J and Tableau is very easy now that you know how to use SQL Workbench/J and Tableau properties. For Tableau Server on the EC2 Instance side you only need the athena.properties file to be added to the Tableau Server's Datasources folder (```tabsvc/vizlserver/Datasources``` for Windows or ```/var/opt/tableau/tableau_server/data/tabsvc/vizqlserver/Datasources/``` for Linux).
+The configuration for SQL Workbench/J and Tableau is very easy now that you know how to use SQL Workbench/J and Tableau properties. For Tableau Server on the EC2 Instance side you only need the athena.properties file to be added to the Tableau Server's Datasources folder (```tabsvc/vizlserver/Datasources``` for Windows or ```/var/opt/tableau/tableau_server/data/tabsvc/vizqlserver/Datasources/``` for Linux).
     
-    On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver Installation and Configuration Guide](https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC_2.0.9/docs/Simba+Athena+JDBC+Driver+Install+and+Configuration+Guide.pdf) (See the Section on *Using InstanceProfileCredentialsProvider* on page 35.
+On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver Installation and Configuration Guide](https://s3.amazonaws.com/athena-downloads/drivers/JDBC/SimbaAthenaJDBC_2.0.9/docs/Simba+Athena+JDBC+Driver+Install+and+Configuration+Guide.pdf) (See the Section on *Using InstanceProfileCredentialsProvider* on page 35.
     
-    * **SQL Workbench/J**:
+* **SQL Workbench/J**:
     
     **Note:** You will need to be running SQL Workbench on the EC2 Instance.
     
     ![Workbench/J Instance profile Credentials Extended Properties](img/workbech-instance-profile-properties.jpg)
     
-    * **Tableau Server**:  
+* **Tableau Server**:  
     
     ([Tableau athena.properties file for Instance Profile Credentials](property-file-examples/scenario-3/athena.properties))
     
@@ -128,6 +128,7 @@ This scenario will require IAM and IdP configuration so you will need appropriat
     2. Create some Content
     
     ![Desktop Create Content](img/tableau-desktop-connect-to-athena-2.jpg)
+    
     ![Desktop Create Content](img/tableau-desktop-connect-to-athena-3.jpg)
     
     3. Publish the Workbook (or the Data Source) to Tableau Server
@@ -147,6 +148,7 @@ This scenario will require IAM and IdP configuration so you will need appropriat
     6. You can now create content on Server and Desktop using the Published Connection without needing any credentials
     
     ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8a.jpg)
+    
     ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-9.jpg)
     
     
