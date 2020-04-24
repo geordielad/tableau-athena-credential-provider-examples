@@ -100,7 +100,7 @@ On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver I
     ```
         AwsCredentialsProviderClass=com.simba.athena.amazonaws.auth.InstanceProfileCredentialsProvider
         AWSRegion=us-east-1
-        S3OutputLocation=s3://aws-athena-query-results-810242698449-us-east-1/
+        S3OutputLocation=s3://aws-athena-query-results-XXXXXXXX-us-east-1/
         RowsToFetchPerBlock=10000
         LogPath=c:/athena-jdbc-logs
         LogLevel=6
