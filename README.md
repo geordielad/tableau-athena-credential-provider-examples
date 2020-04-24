@@ -117,4 +117,39 @@ This scenario will require IAM and IdP configuration so you will need appropriat
 
     ![IAM Instance Profile Role](img/iam-instance-profile-role.jpg)
     
-    As long as the role has appropriate access to Athena and S3 then SQL Workbench and Tableau will be able to utilize the Instance Profile to acquire the credentials for Athena. But first we need to publish some content from Tableau Desktop and I am going to assume that your Tableau Desktop is not on an EC2 instance. This means that we cannot use the Instance Profile Credentials scenario we will need to use another technique. Don't worry, later in this aticle we will see some options for allowing the Desktop authentication to not rely on static credentials but right now lets create some content on Tableau Desktop using a static Id and Access Key.
+    As long as the role has appropriate access to Athena and S3 then SQL Workbench and Tableau will be able to utilize the Instance Profile to acquire the credentials for Athena. But first we need to publish some content from Tableau Desktop and I am going to assume that your Tableau Desktop is not on an EC2 instance. This means that we cannot use the Instance Profile Credentials scenario we will need to use another technique. Don't worry, later in this aticle we will see some options for allowing the Desktop authentication to not rely on static credentials but right now lets create some content on Tableau Desktop using a Static ID and Access Key and tehn publish to our server that if configured for Instance Profile Credentials.
+    
+    1. Create a New Workboook with a Connection to Athena
+    
+    Note: this is a Tableau Desktop that is **not** on our EC2 Instance
+    
+    ![Desktop Connection](tableau-desktop-connect-to-athena.jpg)
+    
+    2. Create some Content
+    
+    ![Desktop Create Content](tableau-desktop-connect-to-athena-2.jpg)
+    ![Desktop Create Content](tableau-desktop-connect-to-athena-3.jpg)
+    
+    3. Publish the Workbook (or the Data Source) to Tableau Server
+    
+    We will publish the Data Source so we can access it later using th profile Credentials. Note that we can either embed the passowrd or leave it a prompt user. We will remove the username and any password after publishing so its not that important.
+    
+    ![Desktop Publish](tableau-desktop-connect-to-athena-4.jpg)
+    
+    4. Update the Username and Password to dummy values. You need to enter something to enable the Sign-In or Save button.
+    
+    ![Server Update Connection Information](tableau-desktop-connect-to-athena-7.jpg)
+
+    5 Your Connection is now saved and it should be using the Instance Profile Credentials to authenticate to Athena.
+    
+    ![Server Update Connection Information](tableau-desktop-connect-to-athena-8.jpg)
+    
+    6. You can now create content on Server and Desktop using the Published Connection without needing any credentials
+    
+    ![Server Update Connection Information](tableau-desktop-connect-to-athena-8a.jpg)
+    ![Server Update Connection Information](tableau-desktop-connect-to-athena-9.jpg)
+    
+    
+    
+    
+    
