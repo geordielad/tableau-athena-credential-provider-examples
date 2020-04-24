@@ -141,7 +141,7 @@ On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver I
     
         ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-7.jpg)
 
-    5 Your Connection is now saved and it should be using the Instance Profile Credentials to authenticate to Athena.
+    5. Your Connection is now saved and it should be using the Instance Profile Credentials to authenticate to Athena.
     
         ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8.jpg)
     
