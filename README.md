@@ -121,35 +121,35 @@ On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver I
     
     1. Create a New Workboook with a Connection to Athena
     
-    Note: this is a Tableau Desktop that is **not** on our EC2 Instance
+        Note: this is a Tableau Desktop that is **not** on our EC2 Instance
     
-    ![Desktop Connection](img/tableau-desktop-connect-to-athena.jpg)
+        ![Desktop Connection](img/tableau-desktop-connect-to-athena.jpg)
     
     2. Create some Content
     
-    ![Desktop Create Content](img/tableau-desktop-connect-to-athena-2.jpg)
+        ![Desktop Create Content](img/tableau-desktop-connect-to-athena-2.jpg)
     
-    ![Desktop Create Content](img/tableau-desktop-connect-to-athena-3.jpg)
+        ![Desktop Create Content](img/tableau-desktop-connect-to-athena-3.jpg)
     
     3. Publish the Workbook (or the Data Source) to Tableau Server
     
-    We will publish the Data Source so we can access it later using th profile Credentials. Note that we can either embed the passowrd or leave it a prompt user. We will remove the username and any password after publishing so its not that important.
+        We will publish the Data Source so we can access it later using th profile Credentials. Note that we can either embed the passowrd or leave it a prompt user. We will remove the username and any password after publishing so its not that important.
     
-    ![Desktop Publish](img/tableau-desktop-connect-to-athena-4.jpg)
+        ![Desktop Publish](img/tableau-desktop-connect-to-athena-4.jpg)
     
     4. Update the Username and Password to dummy values. You need to enter something to enable the Sign-In or Save button.
     
-    ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-7.jpg)
+        ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-7.jpg)
 
     5 Your Connection is now saved and it should be using the Instance Profile Credentials to authenticate to Athena.
     
-    ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8.jpg)
+        ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8.jpg)
     
     6. You can now create content on Server and Desktop using the Published Connection without needing any credentials
     
-    ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8a.jpg)
+        ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-8a.jpg)
     
-    ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-9.jpg)
+        ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-9.jpg)
     
     
     
