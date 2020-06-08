@@ -156,8 +156,85 @@ On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver I
     
     ![Server Update Connection Information](img/tableau-desktop-connect-to-athena-9.jpg)
     
+    ### 4. AWS Security Token Service
     
+    The [AWS Security Token Service](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) is a general purpose Web Service for temporary, and limited-privilege, credentials that can be used for Athena to avoid creating and sharing static credentials. Athena can use STS Tokens, often referred to as Session Tokens or Temporary Tokens, to authenticate via the JDBC Driver. STS Tokens cannot be passed directly in the JDBC Connection string or extended properties - therefore they are not passed directly in Tableau's _athena.properties_ file. This is because an STS credential consists of an Access Key ID, a Secret Access Key **and** a Session Token. STS credentials can be created by several mechanisms including the AWS CLI, the SDK Credentials Providers and Custom Providers. Here we will explore some of the techniques. Which one is best for your use case will depend on how much integration you need with your IAM, Directory or Federation Platform.
+
+    We will start by using some simple mechanisms for acquiring the STS Credentials so we can focus on how Tableau Desktop can use the credentials. Note that these simple mechanisms are not intended for production use. First we will use the simplest AWS CLI STS method called GetSessionToken. The problem with this method (in the way we will be using it) is that it requires the caller to already be an AWS IAM user. This looks like a problem because the whole point of the STS Service is to avoid the need for static credentials, but remember we are focusing on how Tableau will *use* the token. Later we will look at some techniques for using a Secure Service to request the tokens, and deliver them to Tableau Desktop. 
     
-    
-    
+    To get started we will use a method that is really designed for Multi-Factor Authentication (MFA). This method is called GetSessionToken.
+
+    Let's get Started:
+
+    #### 1. Request a Session Token using the AWS CLI
+
+    We need to call GetSessionToken using the credentials of an IAM User that already has access to Athena. This is because the temporary STS credentials will have the same permissions as the IAM User. If you as an individual do not have these rights or do not have access to the CLI you will need to get assistance from someone that can provide you with the credentials. You will see all they need to do is provide the Access Key ID, Secret Key and Session Token.
+
+    The cli command is:
+
+    ```aws sts get-session-token --duration-seconds 3600 --output json```
+
+    The full documentation for the cli command is at [https://docs.aws.amazon.com/cli/latest/reference/sts/get-session-token.html]
+
+    Here we requested the token with a lifetime of 3600 seconds or one hour.
+
+    The Output will be like this:
+
+    ```
+    {
+        "Credentials": {
+            "AccessKeyId": "ASIA3ZJR2NTIR3ZVUJ3Q",
+            "SecretAccessKey": "Cg0zgZtN5VbzByDwFHbtLDd/h+fR8NFNSdkWCJcO",
+            "SessionToken": "FwoGZXIvYXdzEJj//////////wEaDMkYX79x40KQdH2K4yKBAebqs3uhgE+hrwfCOmV8ruJkb7/YIZMCfIuDUi3Jz84+DEu1VOpVQ3g75CvW36SN0gvX2qTDncOQIie39Nd7faEPjCLMtMfu2aTdBkFCq0Fa42lcukouPc+q3f5E1PVaoniFgSW7i6Oqp3OV1H3s9pULtIUZdBUzy1zyYZvXFmRGMCi5jPn2BTIoKUxvRObf/0sX0wA/IpvPlkgM6MrCtungUbgmdAyl7suelc81Flse7g==",
+            "Expiration": "2020-06-08T15:07:53Z"
+        }
+    }
+    ```
+
+
+    #### 2. Pass the STS Credentials to Tableau Desktop
+
+    Once you get these credentials you will need to pass them to them to Tableau Desktop, You cannot pass them directly in the *athena.properties* file but you tell the properties file where to find the credentials.
+
+    Place this [*athena.properties*](property-file-examples/scenario-4/athena.properties) file in your Tableau DataSources folder (usually *My Tableau Repository\Datasources* in your Documents folder)
+
+    ```
+    AwsCredentialsProviderClass=com.simba.athena.amazonaws.auth.DefaultAWSCredentialsProviderChain
+    ```
+
+    This properties file is telling the JDBC driver to look for the credentials in a series of providers using a specific order of precedence. The [AWS SDK Documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) describes the order that is used in more detail:
+
+    1. **Environment variables**
+    2. **Java system variables**
+    3. **The default credential profiles file**
+    4. **Amazon ECS container credentials**
+    5. **Instance profile credentials**
+
+    For Tableau Desktop the best options are **1.** or **2.**
+
+    You can use a helper script, or program, to define the variables, then launch Tableau Desktop. For example here is a Windows Powershell script that used the credentials created in the example above:
+
+    ```
+    $env:AWS_ACCESS_KEY_ID = "ASIA3ZJR2NTIR3ZVUJ3Q"
+
+    $env:AWS_SECRET_ACCESS_KEY = "Cg0zgZtN5VbzByDwFHbtLDd/h+fR8NFNSdkWCJcO"
+
+    $env:AWS_SESSION_TOKEN  = "FwoGZXIvYXdzEJj//////////wEaDMkYX79x40KQdH2K4yKBAebqs3uhgE+hrwfCOmV8ruJkb7/YIZMCfIuDUi3Jz84+DEu1VOpVQ3g75CvW36SN0gvX2qTDncOQIie39Nd7faEPjCLMtMfu2aTdBkFCq0Fa42lcukouPc+q3f5E1PVaoniFgSW7i6Oqp3OV1H3s9pULtIUZdBUzy1zyYZvXFmRGMCi5jPn2BTIoKUxvRObf/0sX0wA/IpvPlkgM6MrCtungUbgmdAyl7suelc81Flse7g=="
+
+    Start-Process -FilePath "C:\Program Files\Tableau\Tableau 2020.1\bin\tableau.exe" -WorkingDirectory "C:\Program Files\Tableau\Tableau 2020.1"
+    ```
+    Note how we copied the exact quoted strings from the JSON file into our Powershell Script.
+
+    If you are able to test this on a workstation that has Tableau Desktop installed I have created a [helper Powershell script](shell-script-examples/scenario-4/get-sts-credentials.ps1). The script calls the AWS CLI, defines the environment variables and launches Tableau Desktop without the need to edit any files (You will need to to edit the path to the Tableau Desktop program in the script).
+
+    #### 3. Connect to Athena and Build the Viz
+
+    Because you are using the *athena.properties* file to handle the credentials you cn put anything in the Access Key ID field. You only need to put something there to enable the *Sign In* button.
+
+    ![Connect to Athena](img/2020-06-08-17-05-44.png)
+
+    #### 4. Publish the Workbook or Connection to Tableau Server
+
+    The STS credentials you just used are temporary and they will **not** be saved on Tableau Server. But you can take advantage of an *athena.properties* file on Tableau Server to get SSO to Athena for consumers of the published Workbook or Shared Connection. If your Tableau Server is running on an EC2 Instance you can use the Instance Credentials provider approach described above. 
+        
     
