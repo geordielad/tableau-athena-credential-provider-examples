@@ -202,7 +202,7 @@ On the SQL Workbench/J and Tableau side you can follow the [Athena JDBC Driver I
     AwsCredentialsProviderClass=com.simba.athena.amazonaws.auth.DefaultAWSCredentialsProviderChain
     ```
 
-    This properties file is telling the JDBC driver to look for the credentials in a series of providers using a specific order of precedence. The [AWS SDK Documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) describes the order that is used in more detail:
+    This properties file is telling the JDBC driver to look for the credentials in a series of providers using a specific order of precedence. The [AWS SDK Documentation](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) describes the order that is used in more detail. The order is:
 
     1. **Environment variables**
     2. **Java system variables**
